@@ -1,0 +1,1598 @@
+[
+    {
+        "id": "4a980d5862cc3ba8",
+        "type": "tab",
+        "label": "External Interface",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "719ee0bd1a35afcd",
+        "type": "global-config",
+        "name": "global-config",
+        "env": [
+            {
+                "name": "framework_auth",
+                "value": "user=administrator@reggiepage.hu&password=Security0",
+                "type": "str"
+            }
+        ]
+    },
+    {
+        "id": "7b13faaa2632ba18",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "https://reggiepage.hu/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 910,
+        "y": 380,
+        "wires": [
+            [
+                "ac72a07014656f72"
+            ]
+        ]
+    },
+    {
+        "id": "19c53d534e66577d",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/calendar/*",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 320,
+        "wires": [
+            [
+                "0ff02e5b0e972bc0",
+                "783086860edc253c"
+            ]
+        ]
+    },
+    {
+        "id": "0ff02e5b0e972bc0",
+        "type": "debug",
+        "z": "4a980d5862cc3ba8",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "ac72a07014656f72",
+        "type": "http response",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "content-type": "text/html"
+        },
+        "x": 1360,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "783086860edc253c",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "framework_auth",
+                "tot": "env",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 320,
+        "wires": [
+            [
+                "b11266db9310543f"
+            ]
+        ]
+    },
+    {
+        "id": "b11266db9310543f",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 1",
+        "func": "msg.payload+=\"&model=reminderCalendar&method=generateIcsByName&endpoint=\"\nmsg.payload+=msg.req.params[0]\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 320,
+        "wires": [
+            [
+                "7b13faaa2632ba18"
+            ]
+        ]
+    },
+    {
+        "id": "12846b302e5f56cb",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/utazo_majmok_naptar",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 440,
+        "wires": [
+            [
+                "a4184c34bbcde6e1",
+                "6d75121dcc4a4cbe"
+            ]
+        ]
+    },
+    {
+        "id": "a4184c34bbcde6e1",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "framework_auth",
+                "tot": "env",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 440,
+        "wires": [
+            [
+                "d8d3faf690a922a4"
+            ]
+        ]
+    },
+    {
+        "id": "d8d3faf690a922a4",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 2",
+        "func": "msg.payload+=\"&model=travelTravel&method=getIcsFile\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 440,
+        "wires": [
+            [
+                "7b13faaa2632ba18"
+            ]
+        ]
+    },
+    {
+        "id": "6d75121dcc4a4cbe",
+        "type": "debug",
+        "z": "4a980d5862cc3ba8",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "f58e8f497c8994fe",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/travelGoogleCalendarApi",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 560,
+        "wires": [
+            [
+                "aba81886ee2c8dc5"
+            ]
+        ]
+    },
+    {
+        "id": "ab3ed5a2bbbfede5",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "all_state",
+                "pt": "msg",
+                "to": "payload.state",
+                "tot": "msg",
+                "dc": true
+            },
+            {
+                "t": "set",
+                "p": "code",
+                "pt": "msg",
+                "to": "payload.code",
+                "tot": "msg",
+                "dc": true
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "framework_auth",
+                "tot": "env",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 700,
+        "y": 560,
+        "wires": [
+            [
+                "fa936665df6394af"
+            ]
+        ]
+    },
+    {
+        "id": "fa936665df6394af",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 3",
+        "func": "\nmsg.payload+=\"&model=travelTravel&method=receviedCalendarApiCode&state=\"+msg.all_state[0]+\"&id=\"+msg.all_state[1]+\"&processType=\"+msg.all_state[2]+\"&code=\"+msg.code\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 560,
+        "wires": [
+            [
+                "c875e94e0f0cf5ef"
+            ]
+        ]
+    },
+    {
+        "id": "aba81886ee2c8dc5",
+        "type": "split",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "splt": "__",
+        "spltType": "str",
+        "arraySplt": "3",
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload.state",
+        "x": 390,
+        "y": 560,
+        "wires": [
+            [
+                "8a0e12282d4b0b3d"
+            ]
+        ]
+    },
+    {
+        "id": "8a0e12282d4b0b3d",
+        "type": "join",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload.state",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": true,
+        "accumulate": false,
+        "timeout": "",
+        "count": "3",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 530,
+        "y": 560,
+        "wires": [
+            [
+                "ab3ed5a2bbbfede5"
+            ]
+        ]
+    },
+    {
+        "id": "1c2712889be9f748",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 4",
+        "func": "msg.payload=\"<html><script type=\\\"text/javascript\\\">window.close() ;</script></html>\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
+        "y": 620,
+        "wires": [
+            [
+                "ac72a07014656f72"
+            ]
+        ]
+    },
+    {
+        "id": "c875e94e0f0cf5ef",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "https://reggiepage.hu/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1030,
+        "y": 620,
+        "wires": [
+            [
+                "1c2712889be9f748"
+            ]
+        ]
+    },
+    {
+        "id": "c7e4eea0a3db41f0",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/travelGooglePhotosApi",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 680,
+        "wires": [
+            [
+                "7fd2063972eb58d6"
+            ]
+        ]
+    },
+    {
+        "id": "7fd2063972eb58d6",
+        "type": "split",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "splt": "__",
+        "spltType": "str",
+        "arraySplt": "2",
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "property": "payload.state",
+        "x": 390,
+        "y": 680,
+        "wires": [
+            [
+                "751f2ddd2384a8c7"
+            ]
+        ]
+    },
+    {
+        "id": "751f2ddd2384a8c7",
+        "type": "join",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "mode": "custom",
+        "build": "array",
+        "property": "payload.state",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": true,
+        "accumulate": false,
+        "timeout": "",
+        "count": "2",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "num",
+        "reduceFixup": "",
+        "x": 530,
+        "y": 680,
+        "wires": [
+            [
+                "5d7012328bf2b65b"
+            ]
+        ]
+    },
+    {
+        "id": "5d7012328bf2b65b",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "all_state",
+                "pt": "msg",
+                "to": "payload.state",
+                "tot": "msg",
+                "dc": true
+            },
+            {
+                "t": "set",
+                "p": "code",
+                "pt": "msg",
+                "to": "payload.code",
+                "tot": "msg",
+                "dc": true
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "framework_auth",
+                "tot": "env",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 700,
+        "y": 680,
+        "wires": [
+            [
+                "5a7404561a2dca1b"
+            ]
+        ]
+    },
+    {
+        "id": "5a7404561a2dca1b",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 5",
+        "func": "\nmsg.payload+=\"&model=travelTravel&method=receviedApiCode&state=\"+msg.all_state[0]+\"&id=\"+msg.all_state[1]+\"&code=\"+msg.code\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 680,
+        "wires": [
+            [
+                "c875e94e0f0cf5ef"
+            ]
+        ]
+    },
+    {
+        "id": "1e9076d04a922d86",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "req.headers[\"user-agent\"]",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "GitHub-Hookshot",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 390,
+        "y": 220,
+        "wires": [
+            [
+                "0ed88a973fb63863"
+            ],
+            [
+                "95c68cc5ee2f093a"
+            ]
+        ]
+    },
+    {
+        "id": "8830cfc9dd6e8949",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/git-hooks",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 200,
+        "y": 220,
+        "wires": [
+            [
+                "1e9076d04a922d86",
+                "206728d2f7bb9b46"
+            ]
+        ]
+    },
+    {
+        "id": "206728d2f7bb9b46",
+        "type": "debug",
+        "z": "4a980d5862cc3ba8",
+        "name": "debug 5",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "0ed88a973fb63863",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "jsondata",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg",
+                "dc": true
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "framework_auth",
+                "tot": "env",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 200,
+        "wires": [
+            [
+                "ace643b7abc468ed"
+            ]
+        ]
+    },
+    {
+        "id": "ace643b7abc468ed",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 6",
+        "func": "\nmsg.payload+=\"&model=developmentSubversionRevisions&method=gitHooksReceiver&jsonData=\"+JSON.stringify(msg.jsondata);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 200,
+        "wires": [
+            [
+                "c3c39e78a10e8a34"
+            ]
+        ]
+    },
+    {
+        "id": "95c68cc5ee2f093a",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "NOK",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 580,
+        "y": 240,
+        "wires": [
+            [
+                "ac72a07014656f72"
+            ]
+        ]
+    },
+    {
+        "id": "c3c39e78a10e8a34",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "query",
+        "url": "http://192.168.0.25:9000/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 910,
+        "y": 200,
+        "wires": [
+            [
+                "ac72a07014656f72"
+            ]
+        ]
+    },
+    {
+        "id": "a556e740d6b2520b",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/communicator",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 190,
+        "y": 780,
+        "wires": [
+            [
+                "f012dd915c26950c",
+                "ea4e717729960cf8"
+            ]
+        ]
+    },
+    {
+        "id": "f012dd915c26950c",
+        "type": "debug",
+        "z": "4a980d5862cc3ba8",
+        "name": "debug 6",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "ea4e717729960cf8",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "req.headers.authorization",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "Bearer",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 390,
+        "y": 780,
+        "wires": [
+            [
+                "0387361181f459cb"
+            ],
+            [
+                "6d924fa315bce849"
+            ]
+        ]
+    },
+    {
+        "id": "6d924fa315bce849",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 600,
+        "y": 840,
+        "wires": [
+            [
+                "e4b934fd596633fd"
+            ]
+        ]
+    },
+    {
+        "id": "35506786d3eec263",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "https://reggiepage.hu/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1930,
+        "y": 760,
+        "wires": [
+            [
+                "f98328aa6da51053"
+            ]
+        ]
+    },
+    {
+        "id": "e4b934fd596633fd",
+        "type": "http response",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 2400,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "0387361181f459cb",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "req.headers.authorization",
+                "pt": "msg",
+                "from": "Bearer ",
+                "fromt": "str",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 670,
+        "y": 780,
+        "wires": [
+            [
+                "90e9d019b5939b2e"
+            ]
+        ]
+    },
+    {
+        "id": "90e9d019b5939b2e",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "jsonreq",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg",
+                "dc": true
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "framework_auth",
+                "tot": "env",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 960,
+        "y": 780,
+        "wires": [
+            [
+                "4b0f7fcd752917e1"
+            ]
+        ]
+    },
+    {
+        "id": "d722efb0d9fb44dd",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 7",
+        "func": "\nmsg.payload += \"&model=iotGoogleHomeControl&method=interfaceCommunicator&userToken=\" + msg.req.headers.authorization + \"&requestId=\" + msg.jsonreq.requestId + \"&requestBody=\"+JSON.stringify(msg.jsonreq)\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1760,
+        "y": 820,
+        "wires": [
+            [
+                "35506786d3eec263"
+            ]
+        ]
+    },
+    {
+        "id": "4b0f7fcd752917e1",
+        "type": "json",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "jsonreq",
+        "action": "obj",
+        "pretty": true,
+        "x": 1130,
+        "y": 780,
+        "wires": [
+            [
+                "b3fe1ed9b02bf53b"
+            ]
+        ]
+    },
+    {
+        "id": "b68bb2f44c8f6abb",
+        "type": "inject",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 730,
+        "y": 900,
+        "wires": [
+            [
+                "b13f09e1811284ac"
+            ]
+        ]
+    },
+    {
+        "id": "b13f09e1811284ac",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "jsonreq",
+                "pt": "msg",
+                "to": "{\"inputs\":[{\"context\":{\"locale_country\":\"US\",\"locale_language\":\"en\"},\"intent\":\"action.devices.SYNC\",\"payload\":{\"commands\":[{\"devices\":[{\"id\":\"29\"}],\"execution\":[{\"command\":\"action.devices.commands.OnOff\",\"params\":{\"on\":true}}]}]}}],\"requestId\":\"11976023709519137634\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 960,
+        "y": 900,
+        "wires": [
+            [
+                "4b0f7fcd752917e1"
+            ]
+        ]
+    },
+    {
+        "id": "b3fe1ed9b02bf53b",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "jsonreq",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "inputs",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1290,
+        "y": 780,
+        "wires": [
+            [
+                "272e57e56c4812de"
+            ]
+        ]
+    },
+    {
+        "id": "272e57e56c4812de",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 8",
+        "func": "msg.result=\"NOK\";\nfor (let i in msg.jsonreq.inputs)\n{\n    if (msg.jsonreq.inputs[i].intent == \"action.devices.SYNC\") {\n        msg.result=\"OK\";\n        break;\n    }\n}\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1440,
+        "y": 780,
+        "wires": [
+            [
+                "30cb13b8ef01ec9d"
+            ]
+        ]
+    },
+    {
+        "id": "30cb13b8ef01ec9d",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "result",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "OK",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1610,
+        "y": 780,
+        "wires": [
+            [
+                "af8efa3bd89d826b"
+            ],
+            [
+                "d722efb0d9fb44dd"
+            ]
+        ]
+    },
+    {
+        "id": "af8efa3bd89d826b",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 9",
+        "func": "\nmsg.payload += \"&model=iotDevices&method=reportStateAfterSync&userAgentId=\" + msg.req.headers.authorization + \"&requestId=\" + msg.jsonreq.requestId\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1760,
+        "y": 720,
+        "wires": [
+            [
+                "35506786d3eec263"
+            ]
+        ]
+    },
+    {
+        "id": "f98328aa6da51053",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "istype",
+                "v": "boolean",
+                "vt": "boolean"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 2090,
+        "y": 760,
+        "wires": [
+            [
+                "2bba39a28df0e492"
+            ],
+            [
+                "e4b934fd596633fd"
+            ]
+        ]
+    },
+    {
+        "id": "2bba39a28df0e492",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2240,
+        "y": 680,
+        "wires": [
+            [
+                "e4b934fd596633fd"
+            ]
+        ]
+    },
+    {
+        "id": "5cd07f393f262442",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/login",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 220,
+        "y": 980,
+        "wires": [
+            [
+                "011022f1060d9c49",
+                "4eeb15573071d609"
+            ]
+        ]
+    },
+    {
+        "id": "263698a29f4a0b4b",
+        "type": "http response",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "text/html"
+        },
+        "x": 2410,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "011022f1060d9c49",
+        "type": "file in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "filename": "/usr/local/bin/programs/homeControl/login.html",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 500,
+        "y": 980,
+        "wires": [
+            [
+                "baefa8d7d1cd116e"
+            ]
+        ]
+    },
+    {
+        "id": "baefa8d7d1cd116e",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "html_content",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 980,
+        "wires": [
+            [
+                "38727f474fa0e935"
+            ]
+        ]
+    },
+    {
+        "id": "38727f474fa0e935",
+        "type": "file in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "filename": "/usr/local/bin/programs/homeControl/smarthomeicon.png",
+        "filenameType": "str",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 1170,
+        "y": 980,
+        "wires": [
+            [
+                "d2125a3f552936d7"
+            ]
+        ]
+    },
+    {
+        "id": "cc7a56fe4edd8b64",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 10",
+        "func": "msg.payload = msg.html_content;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1950,
+        "y": 980,
+        "wires": [
+            [
+                "d918cd467184973c"
+            ]
+        ]
+    },
+    {
+        "id": "f1913527ba476590",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "html_content",
+                "pt": "msg",
+                "from": "{image_content}",
+                "fromt": "str",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1710,
+        "y": 980,
+        "wires": [
+            [
+                "cc7a56fe4edd8b64"
+            ]
+        ]
+    },
+    {
+        "id": "d2125a3f552936d7",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 11",
+        "func": "//const byteArray = new Uint8Array(msg.payload);\n//const binaryString = String.fromCharCode.apply(null, byteArray);\n//msg.payload = Buffer.from(binaryString,'base64');\nmsg.payload = msg.payload.toString('base64');\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1490,
+        "y": 980,
+        "wires": [
+            [
+                "f1913527ba476590"
+            ]
+        ]
+    },
+    {
+        "id": "d918cd467184973c",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload",
+                "pt": "msg",
+                "from": "{bad_url}",
+                "fromt": "str",
+                "to": "req.url",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 2180,
+        "y": 980,
+        "wires": [
+            [
+                "263698a29f4a0b4b"
+            ]
+        ]
+    },
+    {
+        "id": "fbbfc0a6fe6f2eae",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 210,
+        "y": 1160,
+        "wires": [
+            [
+                "aa7aeeeb549c37af"
+            ]
+        ]
+    },
+    {
+        "id": "aa7aeeeb549c37af",
+        "type": "http response",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 430,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "4eeb15573071d609",
+        "type": "debug",
+        "z": "4a980d5862cc3ba8",
+        "name": "debug 7",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "e9580f4c5359c59e",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/authentication",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 1240,
+        "wires": [
+            [
+                "fdf0ad8a78f094f1"
+            ]
+        ],
+        "info": "payload.uname\r\npayload.psw\r\npayload.bad_url\r\nreq.headers.referer"
+    },
+    {
+        "id": "7217fe212dfdaa5d",
+        "type": "http response",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "statusCode": "302",
+        "headers": {},
+        "x": 1560,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "fdf0ad8a78f094f1",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 12",
+        "func": "let url = msg.req.headers.referer\n// A query stringet a '?' után levágjuk\nlet queryString = url.split('?')[1];\n\n// A query string paramétereit \"&\"-el elválasztva szétbontjuk\nlet params = queryString.split('&');\n\n// Végigmegyünk a paramétereken, és megkeressük a \"redirect_uri\" értékét\nlet redirectUri = null;\nlet state = null;\nlet clientid = null;\nfor (let param of params) {\n    let [key, value] = param.split('=');\n    if (key === 'redirect_uri') {\n        redirectUri = decodeURIComponent(value);  // Dekódoljuk az URI-t\n    }\n    if (key === 'state') {\n        state = decodeURIComponent(value);  // Dekódoljuk az URI-t\n    }\n    if (key === 'client_id') {\n        clientid = decodeURIComponent(value);  // Dekódoljuk az URI-t\n    }\n}\n\nflow.set(\"redirecturi\", redirectUri);\nflow.set(\"state\", state);\nflow.set(\"clientid\", clientid);\nflow.set(\"bad_url\", msg.payload.bad_url);\n\nmsg.payload = \"user=administrator@reggiepage.hu&password=Security0\" + \"&model=iotGoogleHomeUsers&method=getUserAccess&responsetype=text&gg_username=\" + msg.payload.uname + \"&gg_password=\" + msg.payload.psw\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 1240,
+        "wires": [
+            [
+                "46368e30e4de237e"
+            ]
+        ]
+    },
+    {
+        "id": "9975e2b4e7f3a1bb",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 910,
+        "y": 1240,
+        "wires": [
+            [
+                "8dc4424319ea611f"
+            ],
+            [
+                "98bf14bfb546134d"
+            ]
+        ]
+    },
+    {
+        "id": "46368e30e4de237e",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "query",
+        "url": "https://reggiepage.hu/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 570,
+        "y": 1240,
+        "wires": [
+            [
+                "54f1602bda2b9289"
+            ]
+        ]
+    },
+    {
+        "id": "5ecf867763017d39",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 13",
+        "func": "msg.headers = {\n    Location: flow.get('redirecturi') +\"#access_token=\"+flow.get(\"usertoken\")+\"&state=\"+flow.get(\"state\")\n}\ndelete msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1390,
+        "y": 1300,
+        "wires": [
+            [
+                "7217fe212dfdaa5d"
+            ]
+        ]
+    },
+    {
+        "id": "54f1602bda2b9289",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 14",
+        "func": "flow.set(\"usertoken\", msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 1240,
+        "wires": [
+            [
+                "9975e2b4e7f3a1bb"
+            ]
+        ]
+    },
+    {
+        "id": "8dc4424319ea611f",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 15",
+        "func": "msg.headers = {\n    Location: flow.get(\"bad_url\")\n}\ndelete msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1330,
+        "y": 1200,
+        "wires": [
+            [
+                "7217fe212dfdaa5d"
+            ]
+        ]
+    },
+    {
+        "id": "98bf14bfb546134d",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "clientid",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "250b9bc4-f318-49d5-8e79-dc17a97c1436",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 1050,
+        "y": 1300,
+        "wires": [
+            [
+                "8dc4424319ea611f"
+            ],
+            [
+                "8551f7cb74c5837b"
+            ]
+        ]
+    },
+    {
+        "id": "8551f7cb74c5837b",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "redirecturi",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "https://oauth-redirect.googleusercontent.com/r/reggie-test-smart-home",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 1210,
+        "y": 1300,
+        "wires": [
+            [
+                "8dc4424319ea611f"
+            ],
+            [
+                "5ecf867763017d39"
+            ]
+        ]
+    }
+]
