@@ -1726,5 +1726,300 @@
         "x": 660,
         "y": 1480,
         "wires": []
+    },
+    {
+        "id": "7f6f1e493c7e824c",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/utazo_majmok_utazas_ertekeles/*",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 1540,
+        "wires": [
+            [
+                "f724bcd1e9eb7a3c"
+            ]
+        ]
+    },
+    {
+        "id": "a3a6eef69baefcc0",
+        "type": "http response",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1290,
+        "y": 1540,
+        "wires": []
+    },
+    {
+        "id": "f724bcd1e9eb7a3c",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 25",
+        "func": "msg.payload = env.get('framework_auth');\nmsg.payload +=\"&model=travelTravelVote&method=getTravelData&responsetype=json&identity=\"+msg.req.params[0];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 1540,
+        "wires": [
+            [
+                "6641ad1c8fc1db4f"
+            ]
+        ]
+    },
+    {
+        "id": "8099a9639631b2ba",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/utazo_majmok_ertekeles",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 1600,
+        "wires": [
+            [
+                "700b812e1db840e0"
+            ]
+        ]
+    },
+    {
+        "id": "7afa3b5af0808766",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 26",
+        "func": "msg.payload = `<!DOCTYPE html>\n<html lang=\"hu\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Utazás Értékelése</title>\n    <style>\n    body {\n        margin: 0;\n        height: 100vh;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        font-family: Arial, sans-serif;\n        background-color: #3c4f66;\n    }\n\n    .container {\n        background-color: #ffffff; \n        padding: 20px;\n\t\tpadding-top: 0px;\n        border-radius: 15px;\n        text-align: center;\n        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); \n    }\n\n    .stars {\n        font-size: 50px;\n        cursor: pointer;\n\t\tmargin-top: -20px;\n    }\n\n    .star {\n        color: lightgray;\n    }\n\n    .star.selected {\n        color: gold;\n    }\n\n    .star:hover {\n        color: gold;\n    }\n\n    button {\n        background-color: #4CAF50;\n        color: white;\n        padding: 10px 20px;\n\t\tmargin-top: 20px;\n        font-size: 16px;\n        border: none;\n        border-radius: 25px; \n        cursor: pointer;\n        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n        transition: background-color 0.3s, box-shadow 0.3s; \n    }\n\n    button:hover {\n        background-color: #45a049; \n        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); \n    }\n\n    button:disabled {\n        background-color: gray;\n        cursor: not-allowed;\n        box-shadow: none; \n    }\n\t</style>\n</head>\n<body>\n\n    <div class=\"container\">\n        <h2>${msg.payload.travel} utazás értékelése</h2>\n        <form action=\"https://reggiepage.hu:1100/utazo_majmok_ertekeles\" method=\"POST\">\n            <div class=\"stars\">\n                <span class=\"star\" data-value=\"1\">&#9733;</span>\n                <span class=\"star\" data-value=\"2\">&#9733;</span>\n                <span class=\"star\" data-value=\"3\">&#9733;</span>\n                <span class=\"star\" data-value=\"4\">&#9733;</span>\n                <span class=\"star\" data-value=\"5\">&#9733;</span>\n            </div>\n            <input type=\"hidden\" name=\"rating\" id=\"rating\" value=\"0\">\n            <button id=\"submit\" type=\"submit\" disabled>Küldés</button>\n        </form>\n    </div>\n\n<script>\nconst stars = document.querySelectorAll('.star');\nlet selectedValue = 0;\nconst submitButton = document.getElementById('submit');\nconst ratingInput = document.getElementById('rating');\n\nstars.forEach(star => {\n    star.addEventListener('mouseover', () => {\n        resetStars();\n        const value = star.getAttribute('data-value');\n        highlightStars(value);\n    });\n\n    star.addEventListener('mouseout', () => {\n        resetStars();\n        highlightStars(selectedValue);\n    });\n\n    star.addEventListener('click', () => {\n        selectedValue = star.getAttribute('data-value');\n        highlightStars(selectedValue);\n        ratingInput.value = selectedValue;\n        submitButton.disabled = false;\n    });\n});\n\nfunction highlightStars(value) {\n    stars.forEach(star => {\n        if (star.getAttribute('data-value') <= value) {\n            star.classList.add('selected');\n        }\n    });\n}\n\nfunction resetStars() {\n    stars.forEach(star => {\n        star.classList.remove('selected');\n    });\n}\n</script>\n</body>\n</html>\n\n`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1090,
+        "y": 1480,
+        "wires": [
+            [
+                "a3a6eef69baefcc0"
+            ]
+        ]
+    },
+    {
+        "id": "6641ad1c8fc1db4f",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://reggiepage.hu/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 570,
+        "y": 1540,
+        "wires": [
+            [
+                "90ee0a5b6310494a"
+            ]
+        ]
+    },
+    {
+        "id": "90ee0a5b6310494a",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "payload.error",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "false"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 770,
+        "y": 1540,
+        "wires": [
+            [
+                "7afa3b5af0808766"
+            ],
+            [
+                "c11f5d32325cb286"
+            ]
+        ]
+    },
+    {
+        "id": "c11f5d32325cb286",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 27",
+        "func": "let container_color = '#ffffff';\nif (msg.payload.error) {\n    container_color = '#b00505';\n}\n\nmsg.payload=`<!DOCTYPE html>\n<html lang=\"hu\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Utazás Értékelése</title>\n    <style>\n    body {\n        margin: 0;\n        height: 100vh;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        font-family: Arial, sans-serif;\n        background-color: #3c4f66;\n    }\n\n    .container {\n        background-color: ${container_color}; \n        padding: 20px;\n\t\tpadding-top: 10px;\n\t\tpadding-bottom: 10px;\n        border-radius: 15px;\n        text-align: center;\n        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); \n    }\n\n\n\t</style>\n</head>\n<body>\n\n    <div class=\"container\">\n        <h2>${msg.payload.message}</h2>\n    </div>\n\n</body>\n</html>\n`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 1600,
+        "wires": [
+            [
+                "a3a6eef69baefcc0"
+            ]
+        ]
+    },
+    {
+        "id": "700b812e1db840e0",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 28",
+        "func": "let rating = msg.payload.rating;\nmsg.payload = env.get('framework_auth');\n\nlet url = msg.req.headers.referer;\nlet lastPart = url.substring(url.lastIndexOf('/') + 1);\nmsg.payload +=\"&model=travelTravelVote&method=saveVote&responsetype=json&identity=\"+lastPart+\"&value=\"+rating;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 1600,
+        "wires": [
+            [
+                "94ede895da293d24"
+            ]
+        ]
+    },
+    {
+        "id": "94ede895da293d24",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://reggiepage.hu/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 570,
+        "y": 1600,
+        "wires": [
+            [
+                "b07269333f86cf21"
+            ]
+        ]
+    },
+    {
+        "id": "b07269333f86cf21",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "payload.error",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "false"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 770,
+        "y": 1600,
+        "wires": [
+            [
+                "3cf795323b0dd35e"
+            ],
+            [
+                "c11f5d32325cb286"
+            ]
+        ]
+    },
+    {
+        "id": "3cf795323b0dd35e",
+        "type": "change",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.message",
+                "pt": "msg",
+                "to": "Értékelés mentése sikeres",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1010,
+        "y": 1540,
+        "wires": [
+            [
+                "c11f5d32325cb286"
+            ]
+        ]
+    },
+    {
+        "id": "50b0c7253774182e",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 29",
+        "func": "msg.payload.error = true;\nmsg.payload.message = \"...\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 1660,
+        "wires": [
+            [
+                "c11f5d32325cb286"
+            ]
+        ]
+    },
+    {
+        "id": "5be33716dd74a02b",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/utazo_majmok_utazas_ertekeles",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 1660,
+        "wires": [
+            [
+                "50b0c7253774182e"
+            ]
+        ]
     }
 ]
