@@ -2,10 +2,16 @@
     {
         "id": "4a980d5862cc3ba8",
         "type": "tab",
-        "label": "External Interface",
+        "label": "Live",
         "disabled": false,
-        "info": "",
-        "env": []
+        "info": ""
+    },
+    {
+        "id": "a12ecb05b49aa2db",
+        "type": "tab",
+        "label": "Test",
+        "disabled": false,
+        "info": ""
     },
     {
         "id": "719ee0bd1a35afcd",
@@ -682,7 +688,7 @@
         "method": "POST",
         "ret": "txt",
         "paytoqs": "query",
-        "url": "http://192.168.0.25:9000/remotecall",
+        "url": "https://reggiepage.hu/remotecall",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -1594,5 +1600,131 @@
                 "5ecf867763017d39"
             ]
         ]
+    },
+    {
+        "id": "f361e9dc0f4a78c6",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/utazo_majmok_utazasok/*",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 1400,
+        "wires": [
+            [
+                "24fd1b616bc1b976"
+            ]
+        ]
+    },
+    {
+        "id": "1820d37f884bc73c",
+        "type": "http response",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1030,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "0176d8c9f1802b4f",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/utazo_majmok_utazasok",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 1360,
+        "wires": [
+            [
+                "1820d37f884bc73c"
+            ]
+        ]
+    },
+    {
+        "id": "24fd1b616bc1b976",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 18",
+        "func": "msg.payload = env.get('framework_auth');\nmsg.payload +=\"&model=travelUsers&method=getAllTravelByIdentity&responsetype=json&identity=\"+msg.req.params[0];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 1400,
+        "wires": [
+            [
+                "d76925ec76a4716e"
+            ]
+        ]
+    },
+    {
+        "id": "d76925ec76a4716e",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "https://reggiepage.hu/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 550,
+        "y": 1400,
+        "wires": [
+            [
+                "cbf7a890db62dd2f",
+                "1e3bc7c593a6b361"
+            ]
+        ]
+    },
+    {
+        "id": "cbf7a890db62dd2f",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 19",
+        "func": "let old_payload = msg.payload;\nlet table_string = '';\nlet travelno = old_payload.length;\nlet scripts = \"\";\nlet converter = 100/5;\nfor (let key in old_payload)\n{\n\n  let result_cell = \"-\"\n  if (old_payload[key].is_rating)\n  {\n    let current_result = converter*old_payload[key].vote_result;\n    result_cell = `<div class=\"star-rating star-rating-read star-rating-sm\">\n    <div class=\"star-rating-inner\" style=\"width: ${current_result}%\"></div>\n  </div> (${old_payload[key].vote_result})`}\n\n  \n    table_string += `<tr>\n    <td style=\"color: #000\">${travelno}.</td>\n    <td>${old_payload[key].name}</td>\n    <td>${old_payload[key].travel_date}</td>\n    <td>${old_payload[key].traveller}</td>\n    <td id=\"res\">${result_cell}</td>\n    </tr>`;\n  travelno = travelno-1;\n};\n\nmsg.payload =\n    `<html>\n<head>\n<title>Utazásaim</title>\n<style>\ntable {\n  padding-bottom: 2px;\n  border: 0px solid black;\n  font-family: Verdana, sans-serif;\n  border-collapse: collapse;\n}\ntable td, table th {\n  padding: 10px;\n  padding-top: 2px;\n  padding-bottom: 2px;\n}\ntable td {\n  height: 30px;\n}\ntable th {\ncolor: #ffffff;\nbackground-color: #353149;\n}\n#my td, #my th {\nvertical-align: middle;\n}\ntable tr:nth-child(odd) {\n  background-color: #FFFFFF;\n  color: #444;\n}\n\ntable tr:nth-child(even) {\n  background-color: #F2F2F2;\n  color: #444;\n}\n#res {\n  text-align:center;\n}\n.star-rating {\n    display: inline-block;\n    position: relative;\n    white-space: nowrap;\n    vertical-align: top;\n    height: 32px;\n    line-height: 32px;\n    font-size: 36px;\n    color: #ccc;\n    letter-spacing: 0px\n}\n\n.star-rating:before {\n    position: relative;\n    content: \"★★★★★\";\n    display: inline-block\n}\n\n.star-rating .star-rating-inner {\n    white-space: nowrap;\n    position: absolute;\n    line-height: inherit;\n    height: inherit;\n    top: 0;\n    left: 0;\n    z-index: 1;\n    overflow: hidden\n}\n\n.star-rating.star-rating-sm {\n    height: 20px;\n    line-height: 20px;\n    font-size: 24px\n}\n\n\n.star-rating-read .star-rating-inner:before {\n    position: relative;\n    content: \"★★★★★\";\n    color: #f9bf3b\n\n</style>\n</head>\n<body bgcolor=\"#3c4f66\">\n<div align=\"center\">\n<table id=\"my\">\n<tr>\n<th>No.</th>\n<th>Utazás</th>\n<th>Dátum</th>\n<th>Utazók</th>\n<th>Értékelés</th>\n</tr>\n${table_string}\n</table>\n</div>\n${scripts}\n</body>\n</html>`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 1400,
+        "wires": [
+            [
+                "1820d37f884bc73c"
+            ]
+        ]
+    },
+    {
+        "id": "1e3bc7c593a6b361",
+        "type": "debug",
+        "z": "4a980d5862cc3ba8",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 1480,
+        "wires": []
     }
 ]
