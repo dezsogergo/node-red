@@ -1614,7 +1614,7 @@
         "y": 1400,
         "wires": [
             [
-                "24fd1b616bc1b976"
+                "44dc254e7e896060"
             ]
         ]
     },
@@ -1632,70 +1632,6 @@
         "wires": [
             [
                 "8f305c0ddf2bba59"
-            ]
-        ]
-    },
-    {
-        "id": "24fd1b616bc1b976",
-        "type": "function",
-        "z": "4a980d5862cc3ba8",
-        "name": "function 18",
-        "func": "msg.payload = env.get('framework_auth');\nmsg.payload +=\"&model=travelUsers&method=getAllTravelByIdentity&responsetype=json&identity=\"+msg.req.params[0];\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 370,
-        "y": 1400,
-        "wires": [
-            [
-                "d76925ec76a4716e"
-            ]
-        ]
-    },
-    {
-        "id": "d76925ec76a4716e",
-        "type": "http request",
-        "z": "4a980d5862cc3ba8",
-        "name": "Live",
-        "method": "POST",
-        "ret": "obj",
-        "paytoqs": "query",
-        "url": "https://reggiepage.hu/remotecall",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 550,
-        "y": 1400,
-        "wires": [
-            [
-                "cbf7a890db62dd2f"
-            ]
-        ]
-    },
-    {
-        "id": "cbf7a890db62dd2f",
-        "type": "function",
-        "z": "4a980d5862cc3ba8",
-        "name": "function 19",
-        "func": "let old_payload = msg.payload;\nlet table_string = '';\nlet travelno = old_payload.length;\nlet scripts = \"\";\nlet converter = 100/5;\nfor (let key in old_payload)\n{\n\n  let result_cell = \"-\"\n  if (old_payload[key].is_rating)\n  {\n    let current_result = converter*old_payload[key].vote_result;\n    result_cell = `<div class=\"star-rating star-rating-read star-rating-sm\">\n    <div class=\"star-rating-inner\" style=\"width: ${current_result}%\"></div>\n  </div> (${old_payload[key].vote_result})`}\n\n  \n    table_string += `<tr>\n    <td style=\"color: #000\">${travelno}.</td>\n    <td>${old_payload[key].name}</td>\n    <td>${old_payload[key].travel_date}</td>\n    <td>${old_payload[key].traveller}</td>\n    <td id=\"res\">${result_cell}</td>\n    </tr>`;\n  travelno = travelno-1;\n};\n\nmsg.payload =\n    `<html>\n<head>\n<title>Utazásaim</title>\n<style>\ntable {\n  padding-bottom: 2px;\n  border: 0px solid black;\n  font-family: Verdana, sans-serif;\n  border-collapse: collapse;\n}\ntable td, table th {\n  padding: 10px;\n  padding-top: 2px;\n  padding-bottom: 2px;\n}\ntable td {\n  height: 30px;\n}\ntable th {\ncolor: #ffffff;\nbackground-color: #353149;\n}\n#my td, #my th {\nvertical-align: middle;\n}\ntable tr:nth-child(odd) {\n  background-color: #FFFFFF;\n  color: #444;\n}\n\ntable tr:nth-child(even) {\n  background-color: #F2F2F2;\n  color: #444;\n}\n#res {\n  text-align:center;\n}\n.star-rating {\n    display: inline-block;\n    position: relative;\n    white-space: nowrap;\n    vertical-align: top;\n    height: 32px;\n    line-height: 32px;\n    font-size: 36px;\n    color: #ccc;\n    letter-spacing: 0px\n}\n\n.star-rating:before {\n    position: relative;\n    content: \"★★★★★\";\n    display: inline-block\n}\n\n.star-rating .star-rating-inner {\n    white-space: nowrap;\n    position: absolute;\n    line-height: inherit;\n    height: inherit;\n    top: 0;\n    left: 0;\n    z-index: 1;\n    overflow: hidden\n}\n\n.star-rating.star-rating-sm {\n    height: 20px;\n    line-height: 20px;\n    font-size: 24px\n}\n\n\n.star-rating-read .star-rating-inner:before {\n    position: relative;\n    content: \"★★★★★\";\n    color: #f9bf3b\n\n</style>\n</head>\n<body bgcolor=\"#3c4f66\">\n<div align=\"center\">\n<table id=\"my\">\n<tr>\n<th>No.</th>\n<th>Utazás</th>\n<th>Dátum</th>\n<th>Utazók</th>\n<th>Értékelés</th>\n</tr>\n${table_string}\n</table>\n</div>\n${scripts}\n</body>\n</html>`;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 710,
-        "y": 1400,
-        "wires": [
-            [
-                "a3a6eef69baefcc0"
             ]
         ]
     },
@@ -1849,8 +1785,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1170,
-        "y": 1600,
+        "x": 1210,
+        "y": 1660,
         "wires": [
             [
                 "a3a6eef69baefcc0"
@@ -2011,6 +1947,202 @@
         "wires": [
             [
                 "c11f5d32325cb286"
+            ]
+        ]
+    },
+    {
+        "id": "5a461822224e8e0d",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 31",
+        "func": "let old_payload = msg.payload;\nlet table_string = '';\nlet travelno = old_payload.length;\nlet scripts = `<script>\nvar modal = document.getElementById(\"myModal\");\nvar modalBody = document.getElementById(\"modal-body\");\nvar closeBtn = document.getElementsByClassName(\"close\")[0];\n\ndocument.querySelectorAll('.modal-row').forEach(function(row) {\n  row.onclick = function() {\n    var contentUrl = this.getAttribute('data-content-url');\n    fetchContent(\"https://reggiepage.hu:1100/utazo_majmok_utazas_adatok/\"+contentUrl);\n\n    modal.style.display = \"block\";\n    setTimeout(function() {\n      modal.classList.add(\"show\");\n      modal.style.opacity = 1;\n      modal.style.transform = \"scale(1)\";\n    }, 300);\n  };\n});\n\nfunction fetchContent(url) {\n  fetch(url)\n    .then(response => response.text())\n    .then(data => {\n      modalBody.innerHTML = data;\n      runInlineScripts(modalBody);\n    })\n    .catch(error => {\n      console.error('Hiba a tartalom betöltésekor:', error);\n      modalBody.innerHTML = 'Hiba történt a tartalom betöltésekor.';\n    });\n}\n\nfunction runInlineScripts(container) {\n    const scripts = container.getElementsByTagName('script');\n    for (let i = 0; i < scripts.length; i++) {\n        eval(scripts[i].innerHTML); // A script futtatása\n    }\n}\n\ncloseBtn.onclick = function() {\n  modal.style.opacity = 0;\n  modal.style.transform = \"scale(0.9)\";\n      \n  setTimeout(function() {\n    modal.classList.remove(\"show\");\n    modal.style.display = \"none\";\n  }, 500);\n}\n\nwindow.onclick = function(event) {\n  if (event.target == modal) {\n    modal.style.opacity = 0;\n    modal.style.transform = \"scale(0.9)\";\n    setTimeout(function() {\n      modal.classList.remove(\"show\");\n      modal.style.display = \"none\";\n    }, 500);\n  }\n}\nconsole.log('Csak nem kiváncsi vagy a kódra?')\n</script>\n<script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n`;\nlet converter = 100/5;\nfor (let key in old_payload)\n{\n\n  let result_cell = \"-\"\n  if (old_payload[key].is_rating)\n  {\n    let current_result = converter*old_payload[key].vote_result;\n    result_cell = `<div class=\"star-rating star-rating-read star-rating-sm\">\n    <div class=\"star-rating-inner\" style=\"width: ${current_result}%\"></div>\n  </div> (${old_payload[key].vote_result})`}\n\n  \n    table_string += `<tr class=\"modal-row\" data-content-url=\"${old_payload[key].identity}\">\n    <td style=\"color: #000\">${travelno}.</td>\n    <td>${old_payload[key].name}</td>\n    <td>${old_payload[key].travel_date}</td>\n    <td>${old_payload[key].traveller}</td>\n    <td id=\"res\">${result_cell}</td>\n    </tr>`;\n  travelno = travelno-1;\n};\n\nmsg.payload =\n    `<html>\n<head>\n<title>Utazásaim</title>\n<style>\ntable {\n  padding-bottom: 2px;\n  border: 0px solid black;\n  font-family: Verdana, sans-serif;\n  border-collapse: collapse;\n}\ntable td, table th {\n  padding: 10px;\n  padding-top: 2px;\n  padding-bottom: 2px;\n}\ntable td {\n  height: 30px;\n}\ntable th {\ncolor: #ffffff;\nbackground-color: #353149;\n}\n#my td, #my th {\nvertical-align: middle;\n}\n\n.clickable-table tbody tr:hover {\n  background-color: #bfbbbb; \n  cursor: pointer;\n}\ntable tr:nth-child(odd) {\n  background-color: #FFFFFF;\n  color: #444;\n}\n\ntable tr:nth-child(even) {\n  background-color: #F2F2F2;\n  color: #444;\n}\n#res {\n  text-align:center;\n}\n.star-rating {\n    display: inline-block;\n    position: relative;\n    white-space: nowrap;\n    vertical-align: top;\n    height: 32px;\n    line-height: 32px;\n    font-size: 36px;\n    color: #ccc;\n    letter-spacing: 0px\n}\n\n.star-rating:before {\n    position: relative;\n    content: \"★★★★★\";\n    display: inline-block\n}\n\n.star-rating .star-rating-inner {\n    white-space: nowrap;\n    position: absolute;\n    line-height: inherit;\n    height: inherit;\n    top: 0;\n    left: 0;\n    z-index: 1;\n    overflow: hidden\n}\n\n.star-rating.star-rating-sm {\n    height: 20px;\n    line-height: 20px;\n    font-size: 24px\n}\n\n.star-rating-read .star-rating-inner:before {\n    position: relative;\n    content: \"★★★★★\";\n    color: #f9bf3b\n    }\n\n.modal {\n    display: none;\n    position: fixed;\n    z-index: 1;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%;\n    overflow: auto;\n    background-color: rgba(0, 0, 0, 0.4);\n}\n\n.modal-content {\n    background-color: #fefefe;\n    margin: auto;\n    padding: 20px;\n    border: 1px solid #888;\n    width: 80%;\n    max-height: 80vh;\n    overflow-y: auto;\n    position: relative;\n    border-radius: 15px;\n    transform: scale(0.9);\n    box-shadow: 0 4px 10px rgba(255, 255, 255, 50%);\n    padding-top: 0px;\n}\n\n\n\n.modal.show {\n  display: block;\n  opacity: 1;\n  transform: scale(1);\n}\n\n.close {\n  position: absolute;\n  right: 15%;\n  top: 5%;\n  z-index: 10;\n  font-size: 24px;\n  cursor: pointer;\n}\n.close:hover {\n    color: #ff0000;\n}\n\n\n</style>\n</head>\n<body bgcolor=\"#3c4f66\">\n<div align=\"center\">\n<table id=\"my\" class=\"clickable-table\">\n<tr>\n<th>No.</th>\n<th>Utazás</th>\n<th>Dátum</th>\n<th>Utazók</th>\n<th>Értékelés</th>\n</tr>\n${table_string}\n</table>\n</div>\n  <div id=\"myModal\" class=\"modal\">\n      <span class=\"close\">&times;</span>\n    <div class=\"modal-content\">\n    <div id=\"referer\"></div>\n      <div id=\"modal-body\" style=\"margin-top: 10px\">Tartalom betöltése...</div>\n    </div>\n  </div>\n${scripts}\n</body>\n</html>`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 1400,
+        "wires": [
+            [
+                "a3a6eef69baefcc0"
+            ]
+        ]
+    },
+    {
+        "id": "c3e411d568c3c055",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "https://reggiepage.hu/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 550,
+        "y": 1400,
+        "wires": [
+            [
+                "5a461822224e8e0d"
+            ]
+        ]
+    },
+    {
+        "id": "44dc254e7e896060",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 32",
+        "func": "msg.payload = env.get('framework_auth');\nmsg.payload +=\"&model=travelUsers&method=getAllTravelByIdentity&responsetype=json&identity=\"+msg.req.params[0];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 1400,
+        "wires": [
+            [
+                "c3e411d568c3c055"
+            ]
+        ]
+    },
+    {
+        "id": "25d6498c2da77db1",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 33",
+        "func": "msg.payload = env.get('framework_auth');\nmsg.payload +=\"&model=travelTravel&method=getTravelDataByIdentity&responsetype=json&identity=\"+msg.req.params[0];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 1720,
+        "wires": [
+            [
+                "3eef0c1c95b507f6"
+            ]
+        ]
+    },
+    {
+        "id": "bca01548cea0db71",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/utazo_majmok_utazas_adatok/*",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 1720,
+        "wires": [
+            [
+                "25d6498c2da77db1"
+            ]
+        ]
+    },
+    {
+        "id": "3eef0c1c95b507f6",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "https://reggiepage.hu/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 590,
+        "y": 1720,
+        "wires": [
+            [
+                "eb90b39a3cba7ba9"
+            ]
+        ]
+    },
+    {
+        "id": "5ae2f8798dd4a0b3",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 34",
+        "func": "let old_payload = msg.payload;\n\nlet rating = '';\nlet converter = 100/5;\nif (old_payload.is_rating)\n{\n    let current_result = converter*old_payload.vote_result;\n    rating = `<br/><div class=\"star-rating star-rating-read star-rating-sm\" style=\"line-height:30px\">\n    <div class=\"star-rating-inner\" style=\"height:30px;width: ${current_result}%\"></div>\n  </div> <font style=\"font-size:18px\">(${old_payload.vote_result})</font>`\n\n}\n\n\n\n\nlet crest_img = '';\nif (old_payload.crest_img)\n{\n//    crest_img = `<div align=\"center\"><img src=\"data:image/png;base64,${old_payload.crest_img}\" class=\"header-image\"/></div>`\ncrest_img = `data:image/png;base64,${old_payload.crest_img}`\n}\n\nlet travellers = '';\n\nfor (let traveller of old_payload.traveller)\n{travellers+=`<li>${traveller}</li>`;}\n\nlet calendar_comment = '';\n\nif (old_payload.calendar_comment) {\n    calendar_comment = `<div class=\"section\">\n            <div class=\"section-title\">Utazás leírása:</div>\n            <p>${old_payload.calendar_comment.replace(/\\n/g, '<br/>')}</p>\n        </div>`\n}\n\n\nlet uploaded_content = '';\nlet total_summary = 0;\nlet diagram_dataset = ''\nfor (let line in old_payload.uploaded_content)\n{\n    let summary= old_payload.uploaded_content[line].photo + old_payload.uploaded_content[line].video;\n    total_summary = total_summary+summary;\n    diagram_dataset += `,['${old_payload.uploaded_content[line].user}', ${total_summary}]`;\n    uploaded_content += `<div class=\"expense-item\"><b>${old_payload.uploaded_content[line].user}:</b> ${old_payload.uploaded_content[line].photo} kép, ${old_payload.uploaded_content[line].video} videó (${summary})</div>`;\n     }\n\nif (uploaded_content) {\n    uploaded_content = `\n\n    <div class=\"section\">\n        <div class=\"section-title\" > Feltöltött tartalmak (${total_summary}):</div>\n        <div class=\"expenses-container\">\n            <div class=\"expenses-list\">\n                ${uploaded_content}\n            </div>\n            <!-- Diagram oszlop -->\n        <div class=\"diagram-container\">\n            <div id=\"piechart_3d\" style=\"min-height:200px\"></div>\n        </div>\n    </div>\n        </div>`\n}\n\n\n\nlet paid_content = '';\n\nfor (let line in old_payload.summary_spending) {\n    paid_content += `<div class=\"expense\"><b>${old_payload.summary_spending[line].name}:</b> ${old_payload.summary_spending[line].paid}</div>`\n}\n\nif (paid_content) {\n    paid_content = `<div class=\"section\">\n    <div class=\"section-title\">Költések:</div>\n    <div class=\"expenses\">\n        ${paid_content}\n    </div>\n</div>`\n}\n\nlet other_content = '';\n\nfor (let line in old_payload.other_data) {\n    other_content += `<div class=\"expense\">${old_payload.other_data[line]}</div>`\n}\n\nif (other_content) {\n    other_content = `<div class=\"section\">\n    <div class=\"section-title\">Egyéb adatok:</div>\n    <div class=\"expenses\">\n        ${other_content}\n    </div>\n</div>`\n}\n\n\n\nlet visited_places_content = '';\nfor (let line in old_payload.visited_places) {\n    visited_places_content += `<li>&#9654;&nbsp;<a href=\"${old_payload.visited_places[line].link}\" target=\"new\"><b>${old_payload.visited_places[line].name}</b>`\n    if (old_payload.visited_places[line].type)\n    {\n        visited_places_content +=` (${old_payload.visited_places[line].type})`\n    }\n    visited_places_content += `</a></li>`\n}\n\n\nif (visited_places_content)\n{\n    visited_places_content = `<div class=\"section\">\n            <div class=\"section-title\">Meglátogatott helyek (${old_payload.visited_places.length}):</div>\n            <ul>\n                ${visited_places_content}\n            </ul>\n        </div>`\n}\n\nlet chatgpt_story = '';\n\nif (old_payload.chatgpt_story) {\nchatgpt_story =`<div class=\"section\">\n            <div class=\"section-title\">A Chat GPT szerint a kirándulásunk a következőképpen történt.:</div>\n            <p>${old_payload.chatgpt_story.replace(/\\n/g, '<br/>')}</p>\n        </div>`}\n\n\n\n\nmsg.payload=`\n\n<head>\n    <style>\n        body {\n            font-family: 'Arial', sans-serif;\n        }\n\n        header {\n    background: linear-gradient(to right, white 0%, white 100px, #3c4f66 110px, #3c4f66 100%);\n    background: #3c4f66;\n    color: white;\n    padding: 20px;\n    text-align: center;\n    font-size: 24px;\n    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);\n    width: 80%;\n    max-width: 1200px; \n    margin: 0 auto;\n}\n\n.header-content {\n    display: flex;\n    align-items: center; \n}\n\n.header-image {\n    width: auto; \n    height: 60px; \n    margin-right: 20px; \n}\n\n.header-text {\n    flex-grow: 1; \n    text-align: center;\n    color: #fff;\n}\n\n        .container {\n            max-width: 1200px;\n            margin: 20px auto;\n            padding: 20px;\n            border-radius: 8px;\n            box-shadow: 0 4px 10px rgba(0,0,0,0.1);\n        }\n\n\n        h2 {\n            color: #3c4f66;\n        }\n\n        .section {\n            margin: 20px 0;\n        }\n\n        .section-title {\n            font-weight: bold;\n            font-size: 18px;\n            margin-bottom: 10px;\n            color: #3c4f66;\n        }\n\n        ul {\n            list-style-type: none;\n            padding: 0;\n            margin: 0;\n        }\n\n        li {\n            background: #e9eff5;\n            border-radius: 5px;\n            padding: 10px;\n            margin: 5px 0;\n            transition: background 0.3s;\n        }\n\n        li:hover {\n            background: #d0e4f9;\n        }\n\n        .expenses {\n            display: grid;\n            grid-template-columns: repeat(2, 1fr);\n            gap: 15px;\n        }\n\n        .expense {\n            background: #e9eff5;\n            padding: 10px;\n            border-radius: 5px;\n            transition: background 0.3s;\n        }\n\n        .expense:hover {\n            background: #d0e4f9;\n        }\n\n        a {color:#000000;\n        text-decoration: none;\n        font-style: italic;\n        }\n\n\n      .expenses-container {\n    display: flex;\n    width: 100%;\n    margin: 0 auto;\n}\n\n.expenses-list {\n    flex: 1;\n    margin-right: 0px;\n}\n\n.expense-item {\n    background: #e9eff5;\n    padding: 10px;\n    border-radius: 5px;\n    margin-bottom: 10px;\n    transition: background 0.3s;\n}\n\n.expense-item:hover {\n    background: #d0e4f9;\n}\n\n.diagram-container {\n    flex: 1; \n    /*background: #f9f9f9; */\n    padding: 10px; \n    border-radius: 5px; \n    display: flex;\n    justify-content: center; \n    align-items: center; \n}\n\n\n\n    </style>\n</head>\n<body>\n\n    <header>\n     <div class=\"header-content\">\n        <div class=\"header-text\">„${old_payload.name}” utazás részletei${rating}</div>\n        </div>\n    </header>\n\n    <div class=\"container\">\n        <div class=\"section\">\n            <div class=\"section-title\">Résztvevők:</div>\n            <ul>\n                ${travellers}\n            </ul>\n        </div>\n        \n\n        <div class=\"section\">\n            <div class=\"section-title\">Tervezett indulás:</div>\n            <p>${old_payload.from_date.replace(/-/g, '.')} ${old_payload.from_time}</p>\n        </div>\n\n        <div class=\"section\">\n            <div class=\"section-title\">Tervezett érkezés:</div>\n            <p>${old_payload.to_date.replace(/-/g, '.')} ${old_payload.end_time}</p>\n        </div>\n\n        <div class=\"section\">\n            <div class=\"section-title\">Napkelte és napnyugta ideje:</div>\n            <p>Napkelte: ${old_payload.sunrise}, Napnyugta: ${old_payload.sunset}</p>\n        </div>\n\n        <i>${calendar_comment}</i>\n\n        ${chatgpt_story}\n\n        ${visited_places_content}\n\n        ${uploaded_content}\n\n        ${paid_content}\n\n        ${other_content}\n\n\n\n\n        \n    </div>\n\n<script>\n\nlet element = document.getElementById('referer');    \nelement.scrollIntoView(true);\n;\n`\nif (uploaded_content)\n{msg.payload+=`\n\n</script>\n<script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n    <script type=\"text/javascript\">\n      google.charts.load(\"current\", {packages:[\"corechart\"]});\n      google.charts.setOnLoadCallback(drawChart);\n      function drawChart() {\n        var data = google.visualization.arrayToDataTable([\n          ['Utazó', 'Feltöltött tartalom utazó alapján']\n          ${diagram_dataset}\n        ]);\n\n        var options = {\n          is3D: true,\n          chartArea:{top:0,width:'100%',height:'100%'}\n        };\n\n        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));\n        chart.draw(data, options);\n      }\n    </script>\n`}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 1680,
+        "wires": [
+            [
+                "a3a6eef69baefcc0"
+            ]
+        ]
+    },
+    {
+        "id": "eb90b39a3cba7ba9",
+        "type": "switch",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "name",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 730,
+        "y": 1720,
+        "wires": [
+            [
+                "5ae2f8798dd4a0b3"
+            ],
+            [
+                "3373eb416a57ab7b"
+            ]
+        ]
+    },
+    {
+        "id": "3373eb416a57ab7b",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 35",
+        "func": "msg.payload='Nincs ilyen utazás';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 1740,
+        "wires": [
+            [
+                "a3a6eef69baefcc0"
             ]
         ]
     }
