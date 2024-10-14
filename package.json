@@ -2,7 +2,9 @@
     "name": "node-red",
     "description": "A Node-RED Project",
     "version": "0.0.1",
-    "dependencies": {},
+    "dependencies": {
+        "@emanuel_miron/node-red-email": "1.0.2"
+    },
     "node-red": {
         "settings": {
             "flowFile": "flows.json",
