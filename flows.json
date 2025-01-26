@@ -727,7 +727,7 @@
         "type": "debug",
         "z": "4a980d5862cc3ba8",
         "name": "debug 6",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1614,7 +1614,8 @@
         "y": 1400,
         "wires": [
             [
-                "44dc254e7e896060"
+                "44dc254e7e896060",
+                "5421cefb1b6acb4d"
             ]
         ]
     },
@@ -1955,7 +1956,7 @@
         "type": "function",
         "z": "4a980d5862cc3ba8",
         "name": "function 31",
-        "func": "let old_payload = msg.payload;\nlet table_string = '';\nlet travelno = old_payload.length;\nlet scripts = `<script>\nvar modal = document.getElementById(\"myModal\");\nvar modalBody = document.getElementById(\"modal-body\");\nvar closeBtn = document.getElementsByClassName(\"close\")[0];\n\ndocument.querySelectorAll('.modal-row').forEach(function(row) {\n  row.onclick = function() {\n    var contentUrl = this.getAttribute('data-content-url');\n    fetchContent(\"https://reggiepage.hu:1100/utazo_majmok_utazas_adatok/\"+contentUrl);\n\n    modal.style.display = \"block\";\n    setTimeout(function() {\n      modal.classList.add(\"show\");\n      modal.style.opacity = 1;\n      modal.style.transform = \"scale(1)\";\n    }, 300);\n  };\n});\n\nfunction fetchContent(url) {\n  fetch(url)\n    .then(response => response.text())\n    .then(data => {\n      modalBody.innerHTML = data;\n      runInlineScripts(modalBody);\n    })\n    .catch(error => {\n      console.error('Hiba a tartalom betöltésekor:', error);\n      modalBody.innerHTML = 'Hiba történt a tartalom betöltésekor.';\n    });\n}\n\nfunction runInlineScripts(container) {\n    const scripts = container.getElementsByTagName('script');\n    for (let i = 0; i < scripts.length; i++) {\n        eval(scripts[i].innerHTML); // A script futtatása\n    }\n}\n\ncloseBtn.onclick = function() {\n  modal.style.opacity = 0;\n  modal.style.transform = \"scale(0.9)\";\n      \n  setTimeout(function() {\n    modal.classList.remove(\"show\");\n    modal.style.display = \"none\";\n  }, 500);\n}\n\nwindow.onclick = function(event) {\n  if (event.target == modal) {\n    modal.style.opacity = 0;\n    modal.style.transform = \"scale(0.9)\";\n    setTimeout(function() {\n      modal.classList.remove(\"show\");\n      modal.style.display = \"none\";\n    }, 500);\n  }\n}\nconsole.log('Csak nem kiváncsi vagy a kódra?')\n</script>\n<script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n`;\nlet converter = 100/5;\nfor (let key in old_payload)\n{\n\n  let result_cell = \"-\"\n  if (old_payload[key].is_rating)\n  {\n    let current_result = converter*old_payload[key].vote_result;\n    result_cell = `<div class=\"star-rating star-rating-read star-rating-sm\">\n    <div class=\"star-rating-inner\" style=\"width: ${current_result}%\"></div>\n  </div> (${old_payload[key].vote_result})`}\n\n  \n    table_string += `<tr class=\"modal-row\" data-content-url=\"${old_payload[key].identity}\">\n    <td style=\"color: #000\">${travelno}.</td>\n    <td>${old_payload[key].name}</td>\n    <td>${old_payload[key].travel_date}</td>\n    <td>${old_payload[key].traveller}</td>\n    <td id=\"res\">${result_cell}</td>\n    </tr>`;\n  travelno = travelno-1;\n};\n\nmsg.payload =\n    `<html>\n<head>\n<title>Utazásaim</title>\n<style>\ntable {\n  padding-bottom: 2px;\n  border: 0px solid black;\n  font-family: Verdana, sans-serif;\n  border-collapse: collapse;\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);\n}\ntable td, table th {\n  padding: 10px;\n  padding-top: 2px;\n  padding-bottom: 2px;\n}\ntable td {\n  height: 30px;\n}\ntable th {\ncolor: #ffffff;\nbackground-color: #353149;\n}\n#my td, #my th {\nvertical-align: middle;\n}\n\n.clickable-table tbody tr:hover {\n  background-color: #bfbbbb; \n  cursor: pointer;\n}\ntable tr:nth-child(odd) {\n  background-color: #FFFFFF;\n  color: #444;\n}\n\ntable tr:nth-child(even) {\n  background-color: #F2F2F2;\n  color: #444;\n}\n#res {\n  text-align:center;\n}\n.star-rating {\n    display: inline-block;\n    position: relative;\n    white-space: nowrap;\n    vertical-align: top;\n    height: 32px;\n    line-height: 32px;\n    font-size: 36px;\n    color: #ccc;\n    letter-spacing: 0px\n}\n\n.star-rating:before {\n    position: relative;\n    content: \"★★★★★\";\n    display: inline-block\n}\n\n.star-rating .star-rating-inner {\n    white-space: nowrap;\n    position: absolute;\n    line-height: inherit;\n    height: inherit;\n    top: 0;\n    left: 0;\n    z-index: 1;\n    overflow: hidden\n}\n\n.star-rating.star-rating-sm {\n    height: 20px;\n    line-height: 20px;\n    font-size: 24px\n}\n\n.star-rating-read .star-rating-inner:before {\n    position: relative;\n    content: \"★★★★★\";\n    color: #f9bf3b\n    }\n\n.modal {\n    display: none;\n    position: fixed;\n    z-index: 1;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%;\n    overflow: auto;\n    background-color: rgba(0, 0, 0, 0.4);\n}\n\n.modal-content {\n    background-color: #fefefe;\n    margin: auto;\n    padding: 20px;\n    border: 1px solid #888;\n    width: 80%;\n    max-height: 80vh;\n    overflow-y: auto;\n    position: relative;\n    border-radius: 15px;\n    transform: scale(0.9);\n    box-shadow: 0 4px 10px rgba(255, 255, 255, 50%);\n    padding-top: 0px;\n}\n\n\n\n.modal.show {\n  display: block;\n  opacity: 1;\n  transform: scale(1);\n}\n\n.close {\n  position: absolute;\n  right: 15%;\n  top: 5%;\n  z-index: 10;\n  font-size: 24px;\n  cursor: pointer;\n}\n.close:hover {\n    color: #ff0000;\n}\n\n\n</style>\n</head>\n<body bgcolor=\"#3c4f66\">\n<div align=\"center\">\n<table id=\"my\" class=\"clickable-table\">\n<tr>\n<th>No.</th>\n<th>Utazás</th>\n<th>Dátum</th>\n<th>Utazók</th>\n<th>Értékelés</th>\n</tr>\n${table_string}\n</table>\n</div>\n  <div id=\"myModal\" class=\"modal\">\n      <span class=\"close\">&times;</span>\n    <div class=\"modal-content\">\n    <div id=\"referer\"></div>\n      <div id=\"modal-body\" style=\"margin-top: 10px\">Tartalom betöltése...</div>\n    </div>\n  </div>\n${scripts}\n</body>\n</html>`;\nreturn msg;",
+        "func": "let old_payload = msg.payload;\nlet table_string = '';\nlet travelno = old_payload.length;\nlet scripts = `<script>\nvar modal = document.getElementById(\"myModal\");\nvar modalBody = document.getElementById(\"modal-body\");\nvar closeBtn = document.getElementsByClassName(\"close\")[0];\n\ndocument.querySelectorAll('.modal-row').forEach(function(row) {\n  row.onclick = function() {\n    var contentUrl = this.getAttribute('data-content-url');\n    fetchContent(\"https://reggiepage.hu:1100/utazo_majmok_utazas_adatok/\"+contentUrl);\n\n    modal.style.display = \"block\";\n    setTimeout(function() {\n      modal.classList.add(\"show\");\n      modal.style.opacity = 1;\n      modal.style.transform = \"scale(1)\";\n    }, 300);\n  };\n});\n\nfunction fetchContent(url) {\n  fetch(url)\n    .then(response => response.text())\n    .then(data => {\n      modalBody.innerHTML = data;\n      runInlineScripts(modalBody);\n    })\n    .catch(error => {\n      console.error('Hiba a tartalom betöltésekor:', error);\n      modalBody.innerHTML = 'Hiba történt a tartalom betöltésekor.';\n    });\n}\n\nfunction runInlineScripts(container) {\n    const scripts = container.getElementsByTagName('script');\n    for (let i = 0; i < scripts.length; i++) {\n        eval(scripts[i].innerHTML); // A script futtatása\n    }\n}\n\ncloseBtn.onclick = function() {\n  modal.style.opacity = 0;\n  modal.style.transform = \"scale(0.9)\";\n      \n  setTimeout(function() {\n    modal.classList.remove(\"show\");\n    modal.style.display = \"none\";\n  }, 500);\n}\n\nwindow.onclick = function(event) {\n  if (event.target == modal) {\n    modal.style.opacity = 0;\n    modal.style.transform = \"scale(0.9)\";\n    setTimeout(function() {\n      modal.classList.remove(\"show\");\n      modal.style.display = \"none\";\n    }, 500);\n  }\n}\nconsole.log('Csak nem kiváncsi vagy a kódra?')\n</script>\n<script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\n`;\nlet converter = 100.0/5.0;\nfor (let key in old_payload)\n{\n\n  let result_cell = \"-\"\n  if (old_payload[key].is_rating)\n  {\n    let current_result = converter*old_payload[key].vote_result;\n    result_cell = `<div class=\"star-rating star-rating-read star-rating-sm\">\n    <div class=\"star-rating-inner\" style=\"width: ${current_result}%\"></div>\n  </div> (${old_payload[key].vote_result.toFixed(1)})`}\n\n  \n    table_string += `<tr class=\"modal-row\" data-content-url=\"${old_payload[key].identity}\">\n    <td style=\"color: #000\">${travelno}.</td>\n    <td>${old_payload[key].name}</td>\n    <td>${old_payload[key].travel_date}</td>\n    <td>${old_payload[key].traveller}</td>\n    <td id=\"res\">${result_cell}</td>\n    </tr>`;\n  travelno = travelno-1;\n};\n\nmsg.payload =\n    `<html>\n<head>\n<title>Utazásaim</title>\n<style>\ntable {\n  padding-bottom: 2px;\n  border: 0px solid black;\n  font-family: Verdana, sans-serif;\n  border-collapse: collapse;\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);\n}\ntable td, table th {\n  padding: 10px;\n  padding-top: 2px;\n  padding-bottom: 2px;\n}\ntable td {\n  height: 30px;\n}\ntable th {\ncolor: #ffffff;\nbackground-color: #353149;\n}\n#my td, #my th {\nvertical-align: middle;\n}\n\n.clickable-table tbody tr:hover {\n  background-color: #bfbbbb; \n  cursor: pointer;\n}\ntable tr:nth-child(odd) {\n  background-color: #FFFFFF;\n  color: #444;\n}\n\ntable tr:nth-child(even) {\n  background-color: #F2F2F2;\n  color: #444;\n}\n#res {\n  text-align:center;\n}\n.star-rating {\n    display: inline-block;\n    position: relative;\n    white-space: nowrap;\n    vertical-align: top;\n    height: 32px;\n    line-height: 32px;\n    font-size: 36px;\n    color: #ccc;\n    letter-spacing: 0px\n}\n\n.star-rating:before {\n    position: relative;\n    content: \"★★★★★\";\n    display: inline-block\n}\n\n.star-rating .star-rating-inner {\n    white-space: nowrap;\n    position: absolute;\n    line-height: inherit;\n    height: inherit;\n    top: 0;\n    left: 0;\n    z-index: 1;\n    overflow: hidden\n}\n\n.star-rating.star-rating-sm {\n    height: 20px;\n    line-height: 20px;\n    font-size: 24px\n}\n\n.star-rating-read .star-rating-inner:before {\n    position: relative;\n    content: \"★★★★★\";\n    color: #f9bf3b\n    }\n\n.modal {\n    display: none;\n    position: fixed;\n    z-index: 1;\n    left: 0;\n    top: 0;\n    width: 100%;\n    height: 100%;\n    overflow: auto;\n    background-color: rgba(0, 0, 0, 0.4);\n}\n\n.modal-content {\n    background-color: #fefefe;\n    margin: auto;\n    padding: 20px;\n    border: 1px solid #888;\n    width: 80%;\n    max-height: 80vh;\n    overflow-y: auto;\n    position: relative;\n    border-radius: 15px;\n    transform: scale(0.9);\n    box-shadow: 0 4px 10px rgba(255, 255, 255, 50%);\n    padding-top: 0px;\n}\n\n\n\n.modal.show {\n  display: block;\n  opacity: 1;\n  transform: scale(1);\n}\n\n.close {\n  position: absolute;\n  right: 15%;\n  top: 5%;\n  z-index: 10;\n  font-size: 24px;\n  cursor: pointer;\n}\n.close:hover {\n    color: #ff0000;\n}\n\n\n</style>\n</head>\n<body bgcolor=\"#3c4f66\">\n<div align=\"center\">\n<table id=\"my\" class=\"clickable-table\">\n<tr>\n<th>No.</th>\n<th>Utazás</th>\n<th>Dátum</th>\n<th>Utazók</th>\n<th>Értékelés</th>\n</tr>\n${table_string}\n</table>\n</div>\n  <div id=\"myModal\" class=\"modal\">\n      <span class=\"close\">&times;</span>\n    <div class=\"modal-content\">\n    <div id=\"referer\"></div>\n      <div id=\"modal-body\" style=\"margin-top: 10px\">Tartalom betöltése...</div>\n    </div>\n  </div>\n${scripts}\n</body>\n</html>`;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2145,5 +2146,115 @@
                 "a3a6eef69baefcc0"
             ]
         ]
+    },
+    {
+        "id": "9915415d42f1d2be",
+        "type": "http in",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "url": "/get_travel_file",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 210,
+        "y": 1820,
+        "wires": [
+            [
+                "66c8333fbe76c240"
+            ]
+        ]
+    },
+    {
+        "id": "66c8333fbe76c240",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 36",
+        "func": "let to_data = `{\"id\":${msg.payload.id}, \"readField\": [\"file\"]}`\nmsg.payload = env.get('framework_auth');\nmsg.payload += \"&model=travelTravelFiles&method=read&responsetype=json&inputtype=json&data=\"+to_data;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 1820,
+        "wires": [
+            [
+                "2e914e75a8745313"
+            ]
+        ]
+    },
+    {
+        "id": "2e914e75a8745313",
+        "type": "http request",
+        "z": "4a980d5862cc3ba8",
+        "name": "Live",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "query",
+        "url": "https://reggiepage.hu/remotecall",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 590,
+        "y": 1820,
+        "wires": [
+            [
+                "f34bb67b7936da77"
+            ]
+        ]
+    },
+    {
+        "id": "f34bb67b7936da77",
+        "type": "function",
+        "z": "4a980d5862cc3ba8",
+        "name": "function 37",
+        "func": "msg.payload = msg.payload[0];\nlet data = msg.payload;\n\nObject.keys(data).forEach(function (key) {\n    msg.payload=Buffer.from(data[key].file, 'base64').toString('utf-8');\n    \n})\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 1820,
+        "wires": [
+            [
+                "ea11f7b2184914fc"
+            ]
+        ]
+    },
+    {
+        "id": "ea11f7b2184914fc",
+        "type": "http response",
+        "z": "4a980d5862cc3ba8",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/xml"
+        },
+        "x": 1290,
+        "y": 1820,
+        "wires": []
+    },
+    {
+        "id": "5421cefb1b6acb4d",
+        "type": "debug",
+        "z": "4a980d5862cc3ba8",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 200,
+        "y": 1340,
+        "wires": []
     }
 ]
